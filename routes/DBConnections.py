@@ -20,7 +20,7 @@ def connectToDB():
     try:
         if connection:
             print("Connected to the db")
+            return connection
     except pymysql.Error as e:
         print(f"Error while connecting to db: {e}")
         
-connectToDB()
