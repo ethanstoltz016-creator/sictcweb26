@@ -52,8 +52,26 @@ def getByID(id):
     except pymysql.Error as e:
         return f"Pymysql error: {e}"
     except Exception as e:
-        return f"An error occurred: {e}"
+        return f"oops something went wrong"
 
+
+#Add a state to the table
+@state_bp.route('/add', methods=['POST'])   #Hey Flask, you're going to get a json object
+def addIt():
+    if request.is_json:
+        data = request.get_json()           #request is a Flask module
+        state = data.get('state')           #"State" cuz the keyword in json
+    else:
+        state = "OH"
+    queryString = f"INSERT INTO States (State) VALUES ({state})"
+    try:
+        with dbc.cursor() as cursor:
+            cursor.execute(queryString)
+            dbc.commit()
+            return "finished"
+    except pymysql.Error as e:
+        return f"Error connecting to db: {e}"
+        
 
 def generate_state_table(data):
     """
