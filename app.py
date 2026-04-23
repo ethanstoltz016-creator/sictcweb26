@@ -18,8 +18,24 @@ def welcome():
     out='''
     <head>
     <style>
+        body {
+            background-color: #3A3A3A;
+            color: #FFF;
+        }
         a{
             text-decoration:none;
+        }
+        a:link {
+            color: #1E90FF;
+        }
+        a:visited {
+            color: #b478ed;
+        }
+        a:hover {
+            color: LightBlue;
+        }
+        a:active {
+            color: purple;
         }
     </style>
     </head>

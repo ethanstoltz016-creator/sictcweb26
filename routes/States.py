@@ -35,7 +35,7 @@ def getAll():
 
 @state_bp.route('/id/<int:id>')     #<id> this is now a variable that the f(x) can run and get from the url
 def getByID(id):
-    queryString = f"SELECT * FROM States WHERE id={id}"
+    queryString = f"SELECT * FROM States WHERE Id={id}"
     try:
         with dbc.cursor() as cursor:
             cursor.execute(queryString)
@@ -54,7 +54,6 @@ def getByID(id):
     except Exception as e:
         return f"oops something went wrong"
 
-
 #Add a state to the table
 @state_bp.route('/add', methods=['POST'])   #Hey Flask, you're going to get a json object
 def addIt():
@@ -71,7 +70,46 @@ def addIt():
             return "finished"
     except pymysql.Error as e:
         return f"Error connecting to db: {e}"
-        
+
+
+#Update a state in the table
+@state_bp.route('/update/<int:id>', methods=['PUT'])   #Hey Flask, you're going to get a json object
+def updateIt(id):
+    if request.is_json:
+        data = request.get_json()           #request is a Flask module
+        id = data.get('Id')                 # Get the ID from the JSON data
+        state = data.get('state')           #"State" cuz the keyword in json
+    else:
+        id = 1
+        state = "OH"
+    queryString = f"UPDATE States SET State = {state} WHERE Id = {id}"
+    print(queryString)
+    try:
+        with dbc.cursor() as cursor:
+            cursor.execute(queryString)
+            dbc.commit()            #saves the request to the db
+            return "finished"
+    except pymysql.Error as e:
+        return f"Error connecting to db: {e}"
+
+#Delete a state in the table
+@state_bp.route('/delete/<int:id>', methods=['DELETE'])   #Hey Flask, you're going to get a json object
+def deleteIt(id):
+    if request.is_json:
+        data = request.get_json()
+        id = data.get('Id')
+    else:
+        id = 1
+    queryString = f"DELETE * FROM States WHERE Id = {id}"
+    print(queryString)
+    try:
+        with dbc.cursor() as cursor:
+            cursor.execute(queryString)
+            dbc.commit()            #saves the request to the db
+            return "finished"
+    except pymysql.Error as e:
+        return f"Error connecting to db: {e}"
+
 
 def generate_state_table(data):
     """
