@@ -1,11 +1,11 @@
 #imports
 from flask import Flask, request, redirect, url_for, Blueprint, jsonify
-from routes import States
+from routes import Accounts, States
 
 #var or object or global things
 app = Flask(__name__)
 app.register_blueprint(States.state_bp, url_prefix='/states')
-
+app.register_blueprint(Accounts.account_bp, url_prefix='/accounts')
 
 #function
 @app.route("/")    #F(X) decorator _> extra processing to the f(x)
@@ -50,6 +50,9 @@ def welcome():
     <li>POST /states/add json</li>
     <li>DELETE /states/delete json</li>
     <li>GET /states/update json</li>
+    <li><a href="/accounts/welcome">GET /accounts/welcome</a></li>
+    <li><a href="/accounts/">GET /accounts/</a></li>
+    <li><a href="/accounts/id/1">GET /accounts/id/<id></a></li>
     </ul>
     </body>
     '''
